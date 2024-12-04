@@ -5,7 +5,7 @@ const TicTacToe = () => {
   return (
     <div className="tic-tac-toe">
       <h1>Tic Tac Toe</h1>
-      {/* Add your Tic Tac Toe component logic here */}
+      {/* Component Logic Here */}
     </div>
   );
 };
