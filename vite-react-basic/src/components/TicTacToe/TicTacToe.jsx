@@ -1,12 +1,15 @@
+import { useState } from 'react';
 import React from 'react';
 import './TicTacToe.sass';
 import Navi from '@/components/Navi/Navi';
 
 const TicTacToe = () => {
 
-  function Square({ value }) {
+  function Square() {
+    const [value, setValue] = useState(null);
     function handleClick() {
-        console.log('clicked!', value);
+        setValue('X');
+        console.log('clicked!');
     }
     return (
         <button 
@@ -23,19 +26,19 @@ const TicTacToe = () => {
         <h1>Tic Tac Toe</h1>
         <div className="tic-tac-toe">
             <div className="board-row">
-                <Square value="1"/>
-                <Square value="2" />
-                <Square value="3" />
+                <Square />
+                <Square />
+                <Square />
             </div>
             <div className="board-row">
-                <Square value="4" />
-                <Square value="5" />
-                <Square value="6" />
+                <Square />
+                <Square />
+                <Square />
             </div>
             <div className="board-row">
-                <Square value="7" />
-                <Square value="8" />
-                <Square value="9" />
+                <Square />
+                <Square />
+                <Square />
             </div>
         </div>
     </>
