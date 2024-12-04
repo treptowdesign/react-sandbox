@@ -8,7 +8,6 @@ const Counter = () => {
   return (
     <>
       <Navi />
-      <div>TEST NAVI</div>
       <div className="counter">
         <h1>Counter</h1>
         <p>Count: {count}</p>

@@ -1,8 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './components/Home/Home';
-import Counter from './components/Counter/Counter';
-import TicTacToe from './components/TicTacToe/TicTacToe';
+import Home from '@/components/Home/Home';
+import Counter from '@/components/Counter/Counter';
+import TicTacToe from '@/components/TicTacToe/TicTacToe';
+import './App.sass'
 
 const App = () => {
   return (
