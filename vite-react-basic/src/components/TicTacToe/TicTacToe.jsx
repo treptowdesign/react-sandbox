@@ -3,55 +3,8 @@ import React from 'react';
 import './TicTacToe.sass';
 import Navi from '@/components/Navi/Navi';
 
-function Square({value, onSquareClick}) {
-    return (
-        <button className="square" onClick={onSquareClick}>
-            {value}
-        </button>
-    );
-}
-
-function Board({xIsNext, squares, onPlay}) {
-    function handleClick(i) { // Updates the state in the board component
-        if(calculateWinner(squares) || squares[i]){
-            return;
-        }
-        const nextSquares = squares.slice(); // copy array (immutability)
-        nextSquares[i] = (xIsNext) ? "X" : "O";
-        onPlay(nextSquares);
-    }
-
-    const winner = calculateWinner(squares);
-    let status;
-    if(winner){
-        status = 'Winner: ' + winner;
-    } else {
-        status = 'Next Player: ' + (xIsNext ? 'X' : 'O')
-    }
-
-    return (
-        <>
-         <div className="status"> {status}</div>
-         <div className="board-row">
-                <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-                <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-                <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
-            </div>
-            <div className="board-row">
-                <Square value={squares[3]} onSquareClick={() => handleClick(3)}  />
-                <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-                <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
-            </div>
-            <div className="board-row">
-                <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-                <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-                <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
-            </div>
-        </>
-    );
-}
-
-function calculateWinner(squares) {
+// Utility Functions 
+const calculateWinner = (squares) => {
     const lines = [
         [0, 1, 2],
         [3, 4, 5],
@@ -71,10 +24,62 @@ function calculateWinner(squares) {
     return null;
 }
 
+// SubComponents
+const Square = ({value, onSquareClick}) => {
+    return (
+        <button className="square" onClick={onSquareClick}>
+            {value}
+        </button>
+    );
+}
 
+const Board = ({xIsNext, squares, onPlay}) => {
+    const winner = calculateWinner(squares);
+    let status;
+
+    if(winner){
+        status = 'Winner: ' + winner;
+    } else {
+        status = 'Next Player: ' + (xIsNext ? 'X' : 'O')
+    }
+
+    function handleClick(i) { // Updates the state in the board component
+        if(winner || squares[i]){
+            return;
+        }
+        const nextSquares = squares.slice(); // copy array (immutability)
+        nextSquares[i] = (xIsNext) ? "X" : "O";
+        onPlay(nextSquares);
+    }
+
+    return (
+        <>
+            <div className="status"> {status}</div>
+            <div className="board-row">
+                <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
+                <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
+                <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
+            </div>
+            <div className="board-row">
+                <Square value={squares[3]} onSquareClick={() => handleClick(3)}  />
+                <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
+                <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
+            </div>
+            <div className="board-row">
+                <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
+                <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
+                <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
+            </div>
+        </>
+    );
+}
+
+// Main Component
 const TicTacToe = () => {
+    // main states
     const [history, setHistory] = useState([Array(9).fill(null)]);
     const [currentMove, setCurrentMove] = useState(0);
+    // computeds
     const xIsNext = currentMove % 2 === 0;
     const currentSquares = history[currentMove];
 
@@ -108,7 +113,7 @@ const TicTacToe = () => {
         <>
             <Navi />
             <h1>Tic Tac Toe</h1>
-            <div className="Status">Looking at move {currentMove + 1} of {history.length}</div>
+            <div className="status">Looking at move {currentMove + 1} of {history.length}</div>
             <div className="game">
                 <div className="game-board">
                     <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
