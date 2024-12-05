@@ -3,9 +3,7 @@ import React from 'react';
 import './TicTacToe.sass';
 import Navi from '@/components/Navi/Navi';
 
-const TicTacToe = () => {
-
-  function Square() {
+function Square() {
     const [value, setValue] = useState(null);
     function handleClick() {
         setValue('X');
@@ -17,8 +15,14 @@ const TicTacToe = () => {
             onClick={handleClick} 
         >
             {value}
-        </button>);
-  }
+        </button>
+    );
+}
+
+
+const TicTacToe = () => {
+
+  // const [squares, setSquares] = useState(Array(9).fill(null));
 
   return (
     <>
