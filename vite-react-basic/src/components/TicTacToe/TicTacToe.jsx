@@ -3,6 +3,13 @@ import React from 'react';
 import './TicTacToe.sass';
 import Navi from '@/components/Navi/Navi';
 
+// ToDo List... 
+// [x] change board to loop out squares 
+// [x] toggle history buttons for Asc/Desc order 
+// [x] highlight winning squares 
+// [x] no-winner draw message 
+// [ ] display move location (row, col) in history list 
+
 // Utility Functions 
 const calculateWinner = (squares) => {
     const lines = [
@@ -18,33 +25,42 @@ const calculateWinner = (squares) => {
     for(let i = 0; i < lines.length; i++){
         const [a, b, c] = lines[i];
         if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]){
-            return squares[a];
+            console.log('Winner: '+lines[i]);
+            return lines[i];
+            // return squares[a];
         }
     }
+    console.log('No Winner yet');
     return null;
 }
 
 // SubComponents
-const Square = ({value, onSquareClick}) => {
+const Square = ({value, onSquareClick, active}) => {
     return (
-        <button className="square" onClick={onSquareClick}>
+        <button className={active ? 'square active': 'square'} onClick={onSquareClick}>
             {value}
         </button>
     );
 }
 
 const Board = ({xIsNext, squares, onPlay}) => {
-    const winner = calculateWinner(squares);
+    const winningSquares = calculateWinner(squares); // returns array of winning squares OR null
+    const winningTeam = winningSquares ? squares[winningSquares[0]] : null; // get the square value (X/O) using first pocket of winning array
     let status;
+    const openSquares = squares.filter((square, index) => {
+        return square == null;
+    })
 
-    if(winner){
-        status = 'Winner: ' + winner;
+    if(winningTeam){
+        status = 'Winner: ' + winningTeam; 
+    } else if(openSquares.length === 0){
+        status = 'Draw!';
     } else {
         status = 'Next Player: ' + (xIsNext ? 'X' : 'O')
     }
 
     function handleClick(i) { // Updates the state in the board component
-        if(winner || squares[i]){
+        if(winningSquares || squares[i]){
             return;
         }
         const nextSquares = squares.slice(); // copy array (immutability)
@@ -52,24 +68,32 @@ const Board = ({xIsNext, squares, onPlay}) => {
         onPlay(nextSquares);
     }
 
+    function isActiveSquare(index){
+        return winningSquares && winningSquares.includes(index)
+    }
+
+    // Loop to render board grid 
+    const boardGrid = []; 
+    for(let row = 0; row < 3; row++){ // 3 rows
+        const gridGrow = [];
+        for(let col = 0; col < 3; col++){ // 3 columns per row
+            const index = row * 3 + col;
+            gridGrow.push(
+                <Square key={index} value={squares[index]} active={isActiveSquare(index)} onSquareClick={() => handleClick(index)} />
+            );
+        }
+        boardGrid.push(
+            <div key={row} className="board-row">
+                {gridGrow}
+            </div>
+        );
+    }
+
     return (
         <>
-            <div className="status"> {status}</div>
-            <div className="board-row">
-                <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-                <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
-                <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
-            </div>
-            <div className="board-row">
-                <Square value={squares[3]} onSquareClick={() => handleClick(3)}  />
-                <Square value={squares[4]} onSquareClick={() => handleClick(4)} />
-                <Square value={squares[5]} onSquareClick={() => handleClick(5)} />
-            </div>
-            <div className="board-row">
-                <Square value={squares[6]} onSquareClick={() => handleClick(6)} />
-                <Square value={squares[7]} onSquareClick={() => handleClick(7)} />
-                <Square value={squares[8]} onSquareClick={() => handleClick(8)} />
-            </div>
+            <div className="status">{status}</div>
+            {boardGrid}
+            <div>Free: {openSquares.length} / {squares.length}</div>
         </>
     );
 }
@@ -79,6 +103,7 @@ const TicTacToe = () => {
     // main states
     const [history, setHistory] = useState([Array(9).fill(null)]);
     const [currentMove, setCurrentMove] = useState(0);
+    const [asc, setAsc] = useState(true);
     // computeds
     const xIsNext = currentMove % 2 === 0;
     const currentSquares = history[currentMove];
@@ -104,9 +129,9 @@ const TicTacToe = () => {
         }
         return (
             <li key={move}>
-                <button onClick={() => jumpTo(move)}>{description}</button>
+                <button onClick={() => jumpTo(move)}>{description}</button> 
             </li>
-        );
+        ); // get row/column of last move square index here^
     });
 
     return (
@@ -116,10 +141,11 @@ const TicTacToe = () => {
             <div className="status">Looking at move {currentMove + 1} of {history.length}</div>
             <div className="game">
                 <div className="game-board">
-                    <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
+                    <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} /> 
                 </div>
                 <div className="game-info">
-                    <ol>{moves}</ol>
+                    <button onClick={() => setAsc(!asc)}>{asc ? 'Asc' : 'Dsc'}</button>
+                    <ol>{asc ? moves : moves.reverse()}</ol>
                 </div>
             </div>
         </>
