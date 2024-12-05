@@ -65,7 +65,7 @@ const Board = ({xIsNext, squares, onPlay}) => {
         }
         const nextSquares = squares.slice(); // copy array (immutability)
         nextSquares[i] = (xIsNext) ? "X" : "O";
-        onPlay(nextSquares);
+        onPlay(nextSquares, i);
     }
 
     function isActiveSquare(index){
@@ -101,15 +101,16 @@ const Board = ({xIsNext, squares, onPlay}) => {
 // Main Component
 const TicTacToe = () => {
     // main states
-    const [history, setHistory] = useState([Array(9).fill(null)]);
+    const [history, setHistory] = useState([{squares: Array(9).fill(null), moveIndex: null}]);
     const [currentMove, setCurrentMove] = useState(0);
     const [asc, setAsc] = useState(true);
     // computeds
     const xIsNext = currentMove % 2 === 0;
-    const currentSquares = history[currentMove];
+    const currentSquares = history[currentMove].squares;
+    console.log('Current Move: ', history[currentMove]);
 
-    function handlePlay(nextSquares){
-        const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    function handlePlay(nextSquares, moveIndex){
+        const nextHistory = [...history.slice(0, currentMove + 1), {squares: nextSquares, moveIndex}];
         setHistory(nextHistory);
         setCurrentMove(nextHistory.length - 1);
     }
@@ -118,20 +119,24 @@ const TicTacToe = () => {
         setCurrentMove(nextMove);
     }
 
-    const moves = history.map((squares, move) => {
+    const moves = history.map((entry, move) => {
+        const moveIndex = entry.moveIndex;
+        const row = moveIndex != null ? Math.floor(moveIndex / 3) + 1 : null; // get the row from moveIndex
+        const col = moveIndex != null ? (moveIndex % 3) + 1 : null; // get the column from moveIndex
+        const location = moveIndex != null ? `(row: ${row}, col: ${col})` : '';
         let description;
         if(move === history.length -1) {
-            description = 'Current Move!';
+            description = `Current Move! ${location}`;
         } else if(move > 0){
-            description = 'Go to move #' + move;
+            description = `Go to move ${move} ${location}`;
         } else {
-            description = "Go to game start";
+            description = `Go to game start`;
         }
         return (
             <li key={move}>
                 <button onClick={() => jumpTo(move)}>{description}</button> 
             </li>
-        ); // get row/column of last move square index here^
+        ); 
     });
 
     return (
