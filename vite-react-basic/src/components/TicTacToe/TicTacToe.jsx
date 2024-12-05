@@ -90,7 +90,9 @@ const TicTacToe = () => {
 
     const moves = history.map((squares, move) => {
         let description;
-        if(move > 0){
+        if(move === history.length -1) {
+            description = 'Current Move!';
+        } else if(move > 0){
             description = 'Go to move #' + move;
         } else {
             description = "Go to game start";
@@ -100,13 +102,13 @@ const TicTacToe = () => {
                 <button onClick={() => jumpTo(move)}>{description}</button>
             </li>
         );
-
     });
 
     return (
         <>
             <Navi />
             <h1>Tic Tac Toe</h1>
+            <div className="Status">Looking at move {currentMove + 1} of {history.length}</div>
             <div className="game">
                 <div className="game-board">
                     <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
