@@ -8,7 +8,7 @@ import Navi from '@/components/Navi/Navi';
 // [x] toggle history buttons for Asc/Desc order 
 // [x] highlight winning squares 
 // [x] no-winner draw message 
-// [ ] display move location (row, col) in history list 
+// [x] display move location (row, col) in history list 
 
 // Utility Functions 
 const calculateWinner = (squares) => {
@@ -25,12 +25,9 @@ const calculateWinner = (squares) => {
     for(let i = 0; i < lines.length; i++){
         const [a, b, c] = lines[i];
         if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]){
-            console.log('Winner: '+lines[i]);
             return lines[i];
-            // return squares[a];
         }
     }
-    console.log('No Winner yet');
     return null;
 }
 
@@ -84,7 +81,7 @@ const Board = ({xIsNext, squares, onPlay}) => {
         }
         boardGrid.push(
             <div key={row} className="board-row">
-                {gridGrow}
+                {gridGrow} 
             </div>
         );
     }
@@ -107,7 +104,7 @@ const TicTacToe = () => {
     // computeds
     const xIsNext = currentMove % 2 === 0;
     const currentSquares = history[currentMove].squares;
-    console.log('Current Move: ', history[currentMove]);
+    // console.log('Current Move: ', history[currentMove]);
 
     function handlePlay(nextSquares, moveIndex){
         const nextHistory = [...history.slice(0, currentMove + 1), {squares: nextSquares, moveIndex}];
