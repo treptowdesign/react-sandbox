@@ -18,8 +18,8 @@ const checkWin = (board, index, color) => {
     const directions = [
         [0, 1],  // horizontal (right)
         [1, 0],  // vertical (down)
-        [1, 1],  // diagonal down-right
-        [1, -1]  // diagonal down-left
+        [1, 1],  // diagonal (down-right)
+        [1, -1]  // diagonal (down-left)
     ];
 
     for (let [rowOffset, colOffset] of directions) {
@@ -121,8 +121,8 @@ const ConnectFour = () => {
     const redIsNext = currentMove % 2 === 0; // toggle red/yellow
 
     const handleColumnClick = (column) => {
-        // find first empty cell in col
-        if(!winner){
+        if(!winner){ // if no winner yet
+            // find first empty cell in col
             for (let row = rows - 1; row >= 0; row--) { // loop thru each row
                 const index = row * columns + column; // only care about the column we're on
                 if (!spaces[index]) {
@@ -132,7 +132,7 @@ const ConnectFour = () => {
                     setCurrentMove(currentMove + 1);
     
                     setWinner(checkWin(spaces, index, (redIsNext ? 'R' : 'Y')));
-                    console.log(winner);
+                    // console.log(winner);
                     return;
                 }
             }
@@ -140,7 +140,6 @@ const ConnectFour = () => {
         } else {
             console.log('GAME OVER!');
         }
-        
     };
 
     return (
@@ -148,7 +147,7 @@ const ConnectFour = () => {
             <Navi />
             <div className="connect-four">
                 <h1>Connect Four</h1>
-                <div>Winner: {winner ? winner.color : 'undecided'}</div>
+                <div>Winner: {winner ? (winner.color === 'R' ? 'RED!' : 'YELLOW!') : 'undecided'}</div>
                 <Board
                     spaces={spaces}
                     redIsNext={redIsNext}

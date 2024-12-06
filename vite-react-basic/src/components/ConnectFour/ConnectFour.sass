@@ -11,6 +11,9 @@
     width: 100% 
     margin: 0 auto
 
+.cf-input-row
+    margin-bottom: 10px
+
 .cf-cell,
 .cf-input
     flex: 0 0 calc(100% / 7)
@@ -24,11 +27,16 @@
 
 .cf-cell
     font-weight: bold
+    color: #666
+    border-radius: 100%
     &.r 
         background: red
-        color: #333 
+        color: darken(red, 15%)
     &.y
         background: yellow
-        color: #333
+        color: darken(yellow, 15%)
     &.active
         border-color: #fff
+
+.cf-input
+    border: solid 1px #666
