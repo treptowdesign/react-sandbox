@@ -43,11 +43,11 @@ const Square = ({value, onSquareClick, active}) => {
 const Board = ({xIsNext, squares, onPlay}) => {
     const winningSquares = calculateWinner(squares); // returns array of winning squares OR null
     const winningTeam = winningSquares ? squares[winningSquares[0]] : null; // get the square value (X/O) using first pocket of winning array
-    let status;
     const openSquares = squares.filter((square, index) => {
         return square == null;
     })
 
+    let status;
     if(winningTeam){
         status = 'Winner: ' + winningTeam; 
     } else if(openSquares.length === 0){
