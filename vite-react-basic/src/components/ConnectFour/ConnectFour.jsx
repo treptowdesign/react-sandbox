@@ -2,24 +2,37 @@ import React, { useState } from 'react';
 import './ConnectFour.sass';
 import Navi from '@/components/Navi/Navi';
 
+///////////////////////////////////////////////////////////////// 
+// Utility Functions
+///////////////////////////////////////////////////////////////// 
 
-const checkWin = (board, row, col, color) => {
+const checkWin = (board, index, color) => {
+    const rows = 6;
+    const columns = 7;
+
+    // get row/col from index
+    const row = Math.floor(index / columns);
+    const col = index % columns;
+
     // directions: [rowOffset, colOffset]
     const directions = [
-        [0, 1], // horizontal (right)
-        [1, 0], // vertical (down)
-        [1, 1], // diagonal down
-        [1, -1] // diagonal up
+        [0, 1],  // horizontal (right)
+        [1, 0],  // vertical (down)
+        [1, 1],  // diagonal down-right
+        [1, -1]  // diagonal down-left
     ];
 
     for (let [rowOffset, colOffset] of directions) {
         let count = 1;
+        const winningIndices = [index]; // start with the current index
 
         // positive
         for (let step = 1; step < 4; step++) {
             const r = row + rowOffset * step;
             const c = col + colOffset * step;
-            if (r >= 0 && r < 6 && c >= 0 && c < 7 && board[r][c] === color) {
+            const i = r * columns + c; // Convert back to index
+            if (r >= 0 && r < rows && c >= 0 && c < columns && board[i] === color) {
+                winningIndices.push(i);
                 count++;
             } else {
                 break;
@@ -30,23 +43,29 @@ const checkWin = (board, row, col, color) => {
         for (let step = 1; step < 4; step++) {
             const r = row - rowOffset * step;
             const c = col - colOffset * step;
-            if (r >= 0 && r < 6 && c >= 0 && c < 7 && board[r][c] === color) {
+            const i = r * columns + c; // Convert back to index
+            if (r >= 0 && r < rows && c >= 0 && c < columns && board[i] === color) {
+                winningIndices.push(i);
                 count++;
             } else {
                 break;
             }
         }
 
-        // win 
+        // win condition: 4 or more in a row
         if (count >= 4) {
-            return true;
+            return winningIndices; //return the indices of the winning cells
         }
     }
 
-    return false;
+    return null; // no win detected
 };
 
+
+///////////////////////////////////////////////////////////////// 
 // Game SubComponents
+///////////////////////////////////////////////////////////////// 
+
 const GameInput = ({ column, onDrop }) => {
     return (
         <button className="cf-input" onClick={() => onDrop(column)}>
@@ -55,10 +74,10 @@ const GameInput = ({ column, onDrop }) => {
     );
 };
 
-const Cell = ({ value }) => {
+const Cell = ({ spaceIndex, value }) => {
     return (
         <div className={`cf-cell ${value ? value.toLowerCase() : ''}`}>
-            {value}
+            {spaceIndex}
         </div>
     );
 };
@@ -74,7 +93,7 @@ const Board = ({ spaces, redIsNext, handleColumnClick }) => {
     const boardGrid = [];
     for (let i = 0; i < spaces.length; i++) {
         boardGrid.push(
-            <Cell key={i} value={spaces[i]} />
+            <Cell key={i} spaceIndex={i} value={spaces[i]} />
         );
     }
 
@@ -89,7 +108,10 @@ const Board = ({ spaces, redIsNext, handleColumnClick }) => {
     );
 };
 
+///////////////////////////////////////////////////////////////// 
 // Main Game Component
+///////////////////////////////////////////////////////////////// 
+
 const ConnectFour = () => {
     const rows = 6;
     const columns = 7;
@@ -99,14 +121,14 @@ const ConnectFour = () => {
 
     const handleColumnClick = (column) => {
         // find first empty cell in col
-        for (let row = rows - 1; row >= 0; row--) {
-            const index = row * columns + column;
+        for (let row = rows - 1; row >= 0; row--) { // loop thru each row
+            const index = row * columns + column; // only care about the column we're on
             if (!spaces[index]) {
-                // update state
                 const nextSpaces = spaces.slice();
                 nextSpaces[index] = redIsNext ? 'R' : 'Y';
                 setSpaces(nextSpaces);
                 setCurrentMove(currentMove + 1);
+                console.log(checkWin(spaces, index, (redIsNext ? 'R' : 'Y')));
                 return;
             }
         }
