@@ -5,6 +5,7 @@
 
 .cf-board,
 .cf-input-row 
+    box-sizing: border-box
     display: flex 
     flex-wrap: wrap
     width: 100% 
@@ -15,12 +16,11 @@
     flex: 0 0 calc(100% / 7)
     box-sizing: border-box
     padding: 5px 
-    border: solid 1px #ddd 
+    border: solid 3px #666 
     text-align: center
     border-radius: 0
-
     height: 80px
-    line-height: 80px
+    align-content: center
 
 .cf-cell
     font-weight: bold
@@ -30,3 +30,5 @@
     &.y
         background: yellow
         color: #333
+    &.active
+        border-color: #fff

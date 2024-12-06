@@ -30,7 +30,7 @@ const checkWin = (board, index, color) => {
         for (let step = 1; step < 4; step++) {
             const r = row + rowOffset * step;
             const c = col + colOffset * step;
-            const i = r * columns + c; // Convert back to index
+            const i = r * columns + c; // convert back to index
             if (r >= 0 && r < rows && c >= 0 && c < columns && board[i] === color) {
                 winningIndices.push(i);
                 count++;
@@ -43,7 +43,7 @@ const checkWin = (board, index, color) => {
         for (let step = 1; step < 4; step++) {
             const r = row - rowOffset * step;
             const c = col - colOffset * step;
-            const i = r * columns + c; // Convert back to index
+            const i = r * columns + c; // convert back to index
             if (r >= 0 && r < rows && c >= 0 && c < columns && board[i] === color) {
                 winningIndices.push(i);
                 count++;
@@ -54,7 +54,7 @@ const checkWin = (board, index, color) => {
 
         // win condition: 4 or more in a row
         if (count >= 4) {
-            return winningIndices; //return the indices of the winning cells
+            return {indices: winningIndices, color: color}; // return the indices of the winning cells
         }
     }
 
@@ -74,15 +74,15 @@ const GameInput = ({ column, onDrop }) => {
     );
 };
 
-const Cell = ({ spaceIndex, value }) => {
+const Cell = ({ spaceIndex, value, active }) => {
     return (
-        <div className={`cf-cell ${value ? value.toLowerCase() : ''}`}>
+        <div className={`cf-cell ${value ? value.toLowerCase() : ''} ${active ? 'active' : ''}`}>
             {spaceIndex}
         </div>
     );
 };
 
-const Board = ({ spaces, redIsNext, handleColumnClick }) => {
+const Board = ({ spaces, redIsNext, handleColumnClick, winningIndices }) => {
     const inputBtns = [];
     for (let i = 0; i < 7; i++) {
         inputBtns.push(
@@ -93,7 +93,7 @@ const Board = ({ spaces, redIsNext, handleColumnClick }) => {
     const boardGrid = [];
     for (let i = 0; i < spaces.length; i++) {
         boardGrid.push(
-            <Cell key={i} spaceIndex={i} value={spaces[i]} />
+            <Cell key={i} spaceIndex={i} value={spaces[i]} active={winningIndices && winningIndices.includes(i) ? true : false} />
         );
     }
 
@@ -117,22 +117,30 @@ const ConnectFour = () => {
     const columns = 7;
     const [spaces, setSpaces] = useState(Array(rows * columns).fill(null));
     const [currentMove, setCurrentMove] = useState(0);
+    const [winner, setWinner] = useState(null);
     const redIsNext = currentMove % 2 === 0; // toggle red/yellow
 
     const handleColumnClick = (column) => {
         // find first empty cell in col
-        for (let row = rows - 1; row >= 0; row--) { // loop thru each row
-            const index = row * columns + column; // only care about the column we're on
-            if (!spaces[index]) {
-                const nextSpaces = spaces.slice();
-                nextSpaces[index] = redIsNext ? 'R' : 'Y';
-                setSpaces(nextSpaces);
-                setCurrentMove(currentMove + 1);
-                console.log(checkWin(spaces, index, (redIsNext ? 'R' : 'Y')));
-                return;
+        if(!winner){
+            for (let row = rows - 1; row >= 0; row--) { // loop thru each row
+                const index = row * columns + column; // only care about the column we're on
+                if (!spaces[index]) {
+                    const nextSpaces = spaces.slice();
+                    nextSpaces[index] = redIsNext ? 'R' : 'Y';
+                    setSpaces(nextSpaces);
+                    setCurrentMove(currentMove + 1);
+    
+                    setWinner(checkWin(spaces, index, (redIsNext ? 'R' : 'Y')));
+                    console.log(winner);
+                    return;
+                }
             }
+            // if none are empty, do nothing 
+        } else {
+            console.log('GAME OVER!');
         }
-        // if none are empty, do nothing 
+        
     };
 
     return (
@@ -140,10 +148,12 @@ const ConnectFour = () => {
             <Navi />
             <div className="connect-four">
                 <h1>Connect Four</h1>
+                <div>Winner: {winner ? winner.color : 'undecided'}</div>
                 <Board
                     spaces={spaces}
                     redIsNext={redIsNext}
                     handleColumnClick={handleColumnClick}
+                    winningIndices={winner ? winner.indices : null}
                 />
             </div>
         </>
