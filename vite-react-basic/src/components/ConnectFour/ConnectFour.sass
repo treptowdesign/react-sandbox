@@ -2,6 +2,8 @@
 .connect-four
     width: 600px
     max-width: 100%
+    h1 
+        margin: 20px 0
 
 .cf-board,
 .cf-input-row 
@@ -40,3 +42,21 @@
 
 .cf-input
     border: solid 1px #666
+
+.status-bar
+    display: block 
+    margin-bottom: 20px
+    border: solid 1px #666
+    padding: 20px
+    border-radius: 10px
+    font-weight: bold
+    &.r-won 
+        background-color: red
+        color: #fff  
+    &.y-won 
+        background-color: yellow
+        color: #111 
+    &.r-turn
+        color: red
+    &.y-turn 
+        color: yellow

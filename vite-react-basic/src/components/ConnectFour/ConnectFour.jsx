@@ -97,16 +97,34 @@ const Board = ({ spaces, redIsNext, handleColumnClick, winningIndices }) => {
         );
     }
 
-    let status = 'Turn: ' + (redIsNext ? 'Red' : 'Yellow');
-
     return (
         <>
-            <div className="status">{status}</div>
             <div className="cf-input-row">{inputBtns}</div>
             <div className="cf-board">{boardGrid}</div>
         </>
     );
 };
+
+const StatusBar = ({redIsNext, winner}) => {
+    let statusMsg;
+    let statusClass;
+    if(winner){
+        const player = winner.color === 'R' ? 'RED' : 'YELLOW';
+        const classKey = winner.color === 'R' ? 'r' : 'y';
+        statusMsg = `${player} HAS WON THE GAME!`;
+        statusClass = 'status-bar ' + classKey + '-won'
+    } else {
+        const player = redIsNext ? 'Red' : 'Yellow';
+        const classKey = redIsNext ? 'r' : 'y';
+        statusMsg = `It is the ${player} player's turn...`;
+        statusClass = 'status-bar ' + classKey + '-turn'
+    }
+    return (
+        <div className={statusClass}>
+            {statusMsg}
+        </div>
+    );
+}
 
 ///////////////////////////////////////////////////////////////// 
 // Main Game Component
@@ -147,7 +165,7 @@ const ConnectFour = () => {
             <Navi />
             <div className="connect-four">
                 <h1>Connect Four</h1>
-                <div>Winner: {winner ? (winner.color === 'R' ? 'RED!' : 'YELLOW!') : 'undecided'}</div>
+                <StatusBar redIsNext={redIsNext} winner={winner} />
                 <Board
                     spaces={spaces}
                     redIsNext={redIsNext}
