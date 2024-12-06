@@ -105,7 +105,7 @@ const Board = ({ spaces, redIsNext, handleColumnClick, winningIndices }) => {
     );
 };
 
-const StatusBar = ({redIsNext, winner}) => {
+const StatusBar = ({redIsNext, winner, turnNum}) => {
     let statusMsg;
     let statusClass;
     if(winner){
@@ -121,6 +121,7 @@ const StatusBar = ({redIsNext, winner}) => {
     }
     return (
         <div className={statusClass}>
+            <div><small>Turn  #{turnNum + 1}</small></div>
             {statusMsg}
         </div>
     );
@@ -165,7 +166,7 @@ const ConnectFour = () => {
             <Navi />
             <div className="connect-four">
                 <h1>Connect Four</h1>
-                <StatusBar redIsNext={redIsNext} winner={winner} />
+                <StatusBar redIsNext={redIsNext} winner={winner} turnNum={currentMove}/>
                 <Board
                     spaces={spaces}
                     redIsNext={redIsNext}
