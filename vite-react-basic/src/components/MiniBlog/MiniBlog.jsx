@@ -42,6 +42,13 @@ const seedData = [
         author: 'Sal Marksman',
         postDate: '2024-12-06'
     },
+    {
+        title: 'Fifth Post Here',
+        content: 'Feugiat habitant morbi in habitant ac. Vehicula velit torquent varius ridiculus dis tellus in mattis. Habitant leo ligula commodo dignissim, orci iaculis enim sollicitudin. Mauris ultrices eros dui cras praesent sed vel. Inceptos facilisi platea magna.',
+        featured: false,
+        author: 'Tess Reckless',
+        postDate: '2024-12-06'
+    },
     
 ];
 
