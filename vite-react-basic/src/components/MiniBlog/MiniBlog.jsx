@@ -5,6 +5,7 @@ import Navi from '@/components/Navi/Navi';
 //////////////////////////////////////////////////////////
 // Notes
 //////////////////////////////////////////////////////////
+// [ ] switch activePost from based on object to based on index
 // [ ] split into component files and import
 // [ ] add ordering and categorization of posts
 
@@ -181,7 +182,7 @@ const MiniBlog = () => {
                     idx === activePost.index ? { ...post, ...formData } : post
                 );
                 // keep activePost pointing to the updated post
-                setActivePost({ ...formData, index: activePost.index });
+                // setActivePost({ ...formData, index: activePost.index });
                 return updatedPosts;
             });
         } else { // add new post
@@ -192,17 +193,19 @@ const MiniBlog = () => {
             setPosts((prevPosts) => {
                 const updatedPosts = [...prevPosts, newPost];
                 // set activePost to the new added post
-                setActivePost({ ...newPost, index: updatedPosts.length - 1 });
+                // setActivePost({ ...newPost, index: updatedPosts.length - 1 });
                 return updatedPosts;
             });
         }
+        setActivePost(null);
         setIsEditing(false); 
     };
     
     const postList = posts.map((post, index) => {
+        const itemClass = post === activePost ? 'post-item active' : 'post-item';
         return (
             <li key={index}>
-                <span className="title">{post.title} </span>
+                <span className={itemClass}>{post.title} </span>
                 <button onClick={() => handleViewPost(index)}>
                     View Post
                 </button>
