@@ -38,13 +38,51 @@ const seedData = [
     
 ];
 
+//////////////////////////////////////////////////////////
+// SubComponents
+//////////////////////////////////////////////////////////
+
+const NewPostForm = () => {
+    return (
+        <div className="new-post-form">
+            NEW POST FORM HERE
+        </div>
+    );
+}
+
+const PostDetails = ({post}) => {
+    return (
+        <div className="post-details">
+            <h2>{post.title}</h2>
+            <p>Author: {post.author} | Date: {post.postDate}</p>
+            <p>{post.content}</p>
+        </div>
+    );
+}
+
+//////////////////////////////////////////////////////////
+// Main Component
+//////////////////////////////////////////////////////////
+
 const MiniBlog = () => {
     const [posts, setPosts] = useState(seedData);
+    const [activePost, setactivePost] = useState(null);
+
+    const handleCreateNewPost = () => {
+        setactivePost(null)
+        console.log('Create a New Post')
+    }
+    const handleViewPost = (index) => {
+        console.log(`View Post: ${index}`)
+        setactivePost(posts[index])
+    }
 
     const postList = posts.map((post, index) => {
         return (
             <li key={index}>
-                {post.title} <button>View Post</button>
+                {post.title} <button onClick={() => handleViewPost(index)}>
+                    View Post
+                </button>
             </li>
         ); 
     });
@@ -55,12 +93,17 @@ const MiniBlog = () => {
       <h1>MiniBlog</h1>
       <div className="mini-blog">
         <aside>
+            <button onClick={handleCreateNewPost}>Create Post</button>
             <ul>
                 {postList}
             </ul>
         </aside>
         <main>
-            Main Content Area
+            {activePost ? (
+                <PostDetails post={activePost} />
+            ) : (
+                <NewPostForm />
+            )}
         </main>
       </div>
     </>
