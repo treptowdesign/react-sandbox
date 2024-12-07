@@ -1,78 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import './MiniBlog.sass';
+import React, { useState } from 'react';
 import Navi from '@/components/Navi/Navi';
+import './MiniBlog.sass';
+import seedData from './seedData';
 
 //////////////////////////////////////////////////////////
 // Notes
 //////////////////////////////////////////////////////////
+
 // [x] switch activePost from object based to index based
-// [ ] split into component files and import
+// [x] split out handleSubmitPost into two create/update handlers
+// [x] move seedData to its own file & import
+// [x] lift formState from PostForm to parent comp. & remove useEffect, handle via props
+// [x] switch from index to Id for posts
+// [ ] split postList into its own subcomp PostList  
 // [ ] add ordering and categorization of posts
-
-//////////////////////////////////////////////////////////
-// Data 
-//////////////////////////////////////////////////////////
-
-const seedData = [
-    {
-        title: 'Sample Post Number One',
-        content: 'Lorem ipsum odor amet, consectetuer adipiscing elit. Consectetur curabitur fermentum semper cubilia maecenas natoque proin. Ultrices sed consectetur taciti interdum purus taciti.',
-        featured: true,
-        author: 'Steve Stephens',
-        postDate: '2024-12-06'
-    },
-    {
-        title: 'The Second Post',
-        content: 'Lacinia suspendisse primis; posuere cursus auctor felis. Vitae nisi non lectus facilisis ultricies torquent facilisi. Tortor vestibulum suspendisse nulla nulla finibus arcu lobortis praesent.',
-        featured: false,
-        author: 'James Glibson',
-        postDate: '2024-12-06'
-    },
-    {
-        title: 'Third Post in the Series',
-        content: 'Magna arcu nisl viverra consectetur per mollis ridiculus. Urna penatibus ultricies aliquet felis posuere at proin. Maximus orci dui pellentesque imperdiet maximus parturient risus eros.',
-        featured: true,
-        author: 'Tad Jackson',
-        postDate: '2024-12-06'
-    },
-    {
-        title: 'Post Number Four',
-        content: 'Ut non congue amet dictum; nibh nunc bibendum cubilia. Penatibus eu curae habitasse leo fermentum. Nullam sed nisl auctor torquent taciti in ullamcorper faucibus. ',
-        featured: false,
-        author: 'Sal Marksman',
-        postDate: '2024-12-06'
-    },
-    {
-        title: 'Fifth Post Here',
-        content: 'Feugiat habitant morbi in habitant ac. Vehicula velit torquent varius ridiculus dis tellus in mattis. Habitant leo ligula commodo dignissim, orci iaculis enim sollicitudin. Mauris ultrices eros dui cras praesent sed vel. Inceptos facilisi platea magna.',
-        featured: false,
-        author: 'Tess Reckless',
-        postDate: '2024-12-06'
-    },
-    
-];
+// [ ] split subcomponents into component files and import 
+// [ ] handle post deletion (and syncing id counter)
 
 //////////////////////////////////////////////////////////
 // SubComponents
 //////////////////////////////////////////////////////////
 
-const PostForm = ({post, onPostSubmit}) => {
-    const [formState, setFormState] = useState({
-        title: post ? post.title : "",
-        author: post ? post.author : "",
-        content: post ? post.content : "",
-        featured: post ? post.featured : false,
-    });
-
-    // keep an eye on 'post' reset when its null - change this out for a better way
-    useEffect(() => {
-        setFormState({
-            title: post ? post.title : "",
-            author: post ? post.author : "",
-            content: post ? post.content : "",
-            featured: post ? post.featured : false,
-        });
-    }, [post]);
+const PostForm = ({formState, setFormState, onPostSubmit}) => {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -85,23 +34,18 @@ const PostForm = ({post, onPostSubmit}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         onPostSubmit(formState); 
-        // reset when you submit a new post too 
-        setFormState({
-            title: "",
-            author: "",
-            content: "",
-            featured: false,
-        });
     };
 
     return (
         <div className="post-form">
-            <h2>{post ? "Edit Post" : "Create a New Post"}</h2>
+            <h2>{formState.title ? "Edit Post" : "Create a New Post"}</h2>
             <form onSubmit={handleSubmit}>
                 <div className="control">
                     <label>Post Title: </label>
                     <input
                         name="title"
+                        type="text"
+                        placeholder='Post Title'
                         value={formState.title}
                         onChange={handleChange}
                         required
@@ -111,6 +55,8 @@ const PostForm = ({post, onPostSubmit}) => {
                     <label>Post Author: </label>
                     <input
                         name="author"
+                        type="text"
+                        placeholder='Post Author'
                         value={formState.author}
                         onChange={handleChange}
                         required
@@ -135,7 +81,7 @@ const PostForm = ({post, onPostSubmit}) => {
                             checked={formState.featured}
                             onChange={handleChange}
                         />
-                        <span>Featured</span>
+                        <span> &nbsp; Featured</span>
                     </label>
                 </div>
                 <button type="submit">Publish Post</button>
@@ -148,7 +94,7 @@ const PostDetails = ({post, onEditPost}) => {
     return (
         <div className="post-details">
             {post.featured && <div className="featured-post">Featured Post</div>}
-            <h2>{post.title}</h2>
+            <h2>{post.title} (id: {post.id})</h2>
             <p>Author: {post.author} | Date: {post.postDate}</p>
             <p>{post.content}</p>
             <button onClick={onEditPost} >Edit Post</button>
@@ -156,88 +102,111 @@ const PostDetails = ({post, onEditPost}) => {
     );
 }
 
+const PostList = ({ posts, activePostId, onViewPost, onCreateNewPost }) => {
+    return (
+        <>
+            <h2>Post List</h2>
+            <ul>
+                {posts.map((post) => (
+                    <li key={post.id}>
+                        <button
+                            className={activePostId === post.id ? 'active' : ''}
+                            onClick={() => onViewPost(post.id)}
+                        >
+                            {post.title} (id: {post.id})
+                        </button>
+                    </li>
+                ))}
+                <li>
+                    <button onClick={onCreateNewPost}>+ Create New Post</button>
+                </li>
+            </ul>
+        </>
+        
+    );
+};
+
 //////////////////////////////////////////////////////////
 // Main Component
 //////////////////////////////////////////////////////////
 
 const MiniBlog = () => {
     const [posts, setPosts] = useState(seedData);
-    const [activePost, setActivePost] = useState(null);
+    const [activePostId, setActivePostId] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [formState, setFormState] = useState({
+        title: "", author: "", content: "", featured: false,
+    });
+    const [idCounter, setIdCounter] = useState(seedData.length);
 
-    // const activePostIndex = activePost ? posts.findIndex((post) => post === activePost) : null;
-
-    const handleCreateNewPost = () => {
-        console.log('Create a New Post')
-        setIsEditing(false)
-        setActivePost(null)
+    const handleCreateNewPost = () => { // takes the user to the blank PostForm
+        // console.log('Create a New Post')
+        setActivePostId(null)
+        setFormState({ title: "", author: "", content: "", featured: false })
+        setIsEditing(false) 
     }
 
-    const handleViewPost = (index) => {
-        console.log(`View Post: ${index}`)
+    const handleViewPost = (id) => { // sets a post to active by id
+        // console.log(`View Post: ${id}`)
+        const post = posts.find((p) => p.id === id);
+        setActivePostId(id)
+        setFormState(post)
         setIsEditing(false)
-        setActivePost(index)
     }
 
-    const handleEditing = () => {
-        console.log('Edit the active post')
+    const handleEditing = () => { // takes the user from post details to PostForm edit mode
+        // console.log('Edit the active post')
         setIsEditing(true)
     }
 
     const handleSubmitPost = (formData) => {
-        if (activePost != null) {
-            setPosts((prevPosts) => {
-                const updatedPosts = [...prevPosts]; // create a shallow copy of the array
-                updatedPosts[activePost] = { ...prevPosts[activePost], ...formData }; // update the specific post
-                return updatedPosts;
-            });
-        }else { // add new post
-            const newPost = {
-                ...formData,
-                postDate: new Date().toISOString().split("T")[0], // add in date value, leave out time
-            };
-            setPosts((prevPosts) => {
-                const updatedPosts = [...prevPosts, newPost];
-                const newIndex = updatedPosts.length - 1; // calculate the index of the new post (last added one)
-                setActivePost(newIndex); // set the new post as the active post
-                return updatedPosts;
-            });
-            
+        if (activePostId != null) { 
+            updatePost(formData) // update exising
+        } else { 
+            addPost(formData) // add new post
         }
         setIsEditing(false)
     };
 
-    const postList = posts.map((post, index) => {
-        return (
-            <li key={index}>
-                <span className={'post-item' + ( activePost === index ? ' active' : '')}>{post.title} </span>
-                <button onClick={() => handleViewPost(index)}>
-                    View Post
-                </button>
-            </li>
-        ); 
-    });
+    const updatePost = (formData) => {
+        setPosts((prevPosts) =>
+            prevPosts.map((post) =>
+                post.id === activePostId ? { ...post, ...formData } : post
+            )
+        );
+    };
+
+    const addPost = (formData) => {
+        const newPost = {
+            ...formData,
+            id: idCounter.toString(), // assign the current value of idCounter as the ID
+            postDate: new Date().toISOString().split('T')[0], // generate the current date
+        };
+        setPosts((prevPosts) => [...prevPosts, newPost]); // add new post to the posts array
+        setActivePostId(newPost.id); // set the new post as the active post
+        setIdCounter((prevCounter) => prevCounter + 1); // increment ID counter
+    };
+
 
   return (
     <>
       <Navi />
       <div className="mini-blog">
         <h1>MiniBlog</h1>
-        <div className="dev">
-            Active Post: {activePost != null ? activePost : 'none'}
-        </div>
         <div className="blog-body">
             <aside>
-                <ul>
-                    {postList}
-                </ul>
-                <button onClick={handleCreateNewPost}>+ Create New Post</button>
+                <PostList
+                    posts={posts}
+                    activePostId={activePostId}
+                    onViewPost={handleViewPost}
+                    onCreateNewPost={handleCreateNewPost}
+                />
             </aside>
             <main>
-                {activePost != null && !isEditing ? (
-                    <PostDetails post={posts[activePost]} onEditPost={handleEditing} />
+                {(activePostId != null && !isEditing) ? (
+                    <PostDetails post={posts.find((p) => p.id === activePostId)} onEditPost={handleEditing} />
                 ) : (
-                    <PostForm post={posts[activePost]} onPostSubmit={handleSubmitPost} />
+                    <PostForm formState={formState} setFormState={setFormState} onPostSubmit={handleSubmitPost} />
                 )}
             </main>
         </div>

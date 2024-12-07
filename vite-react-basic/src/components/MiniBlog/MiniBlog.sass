@@ -2,6 +2,9 @@
 .mini-blog 
     width: 900px
     max-width: 100%
+    h1 
+        margin: 0
+        text-align: left
     .dev 
         padding: dotted 1px #333 
         padding: 10px
@@ -11,33 +14,47 @@
     aside 
         border: dotted 1px #333
         width: 320px
+        h2 
+            margin: 0 
+            padding: 20px 10px
         ul 
             display: block
             margin: 0 0 20px 0
             padding: 0
         li 
             display: block
-            padding: 8px
+            margin-bottom: 4px
         button 
-            padding: 2px 8px
+            display: block 
+            width: 100%
+            text-align: left
+            &.active
+                color: yellow
         .title 
             font-weight: bold
     main 
         border: dotted 1px #333
         flex: 1 
-
-    .post-item 
-        &.active
-            color: yellow
     .post-form
         padding: 20px 
-        border: dotted 1px blue
+        border: dotted 1px #111
+        h2 
+            margin-top: 0
         .control 
             margin-bottom: 10px
         label 
             display: block
+            margin-bottom: 4px
+        input[type="text"]
+            padding: 8px
+            width: 300px 
+            max-width: 100%
+        textarea
+            padding: 8px
     .post-details
         padding: 20px 
         border: dotted 1px #111
+        h2 
+            margin-top: 0
         .featured-post
             color: #646cff
