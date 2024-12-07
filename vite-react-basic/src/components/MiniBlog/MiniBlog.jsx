@@ -5,7 +5,7 @@ import Navi from '@/components/Navi/Navi';
 //////////////////////////////////////////////////////////
 // Notes
 //////////////////////////////////////////////////////////
-// [ ] switch activePost from based on object to based on index
+// [x] switch activePost from based on object to based on index
 // [ ] split into component files and import
 // [ ] add ordering and categorization of posts
 
