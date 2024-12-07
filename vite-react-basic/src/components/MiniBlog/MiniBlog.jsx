@@ -64,7 +64,7 @@ const PostForm = ({post, onPostSubmit}) => {
         featured: post ? post.featured : false,
     });
 
-    // keep an eye on 'post' reset when its null
+    // keep an eye on 'post' reset when its null - change this out for a better way
     useEffect(() => {
         setFormState({
             title: post ? post.title : "",
