@@ -158,6 +158,8 @@ const MiniBlog = () => {
     const [activePost, setActivePost] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
 
+    const activePostIndex = activePost ? posts.findIndex((post) => post === activePost) : null;
+
     const handleCreateNewPost = () => {
         console.log('Create a New Post')
         setIsEditing(false)
@@ -209,6 +211,7 @@ const MiniBlog = () => {
     <>
       <Navi />
       <h1>MiniBlog</h1>
+      <div>Active Index: {activePostIndex}</div>
       <div className="mini-blog">
         <aside>
             <button onClick={handleCreateNewPost}>Create Post</button>
