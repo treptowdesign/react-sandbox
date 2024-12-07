@@ -169,23 +169,30 @@ const MiniBlog = () => {
     }
 
     const handleSubmitPost = (formData) => {
-        if (activePost) { // update existing post
-            setPosts((prevPosts) =>
-                prevPosts.map((post) =>
-                    post === activePost ? { ...post, ...formData } : post
-                )
-            );
+        if (activePost) { // update exisitng post
+            setPosts((prevPosts) => {
+                const updatedPosts = prevPosts.map((post, idx) =>
+                    idx === activePost.index ? { ...post, ...formData } : post
+                );
+                // keep activePost pointing to the updated post
+                setActivePost({ ...formData, index: activePost.index });
+                return updatedPosts;
+            });
         } else { // add new post
             const newPost = {
                 ...formData,
                 postDate: new Date().toISOString().split("T")[0],
             };
-            setPosts((prevPosts) => [...prevPosts, newPost])
+            setPosts((prevPosts) => {
+                const updatedPosts = [...prevPosts, newPost];
+                // set activePost to the new added post
+                setActivePost({ ...newPost, index: updatedPosts.length - 1 });
+                return updatedPosts;
+            });
         }
-        setActivePost(null)
-        setIsEditing(false)
+        setIsEditing(false); 
     };
-
+    
     const postList = posts.map((post, index) => {
         return (
             <li key={index}>
