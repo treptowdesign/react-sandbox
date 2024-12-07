@@ -5,7 +5,7 @@ import Navi from '@/components/Navi/Navi';
 //////////////////////////////////////////////////////////
 // Notes
 //////////////////////////////////////////////////////////
-// [x] switch activePost from based on object to based on index
+// [x] switch activePost from object based to index based
 // [ ] split into component files and import
 // [ ] add ordering and categorization of posts
 
@@ -56,7 +56,7 @@ const seedData = [
 // SubComponents
 //////////////////////////////////////////////////////////
 
-const PostForm = ({post, onSubmit}) => {
+const PostForm = ({post, onPostSubmit}) => {
     const [formState, setFormState] = useState({
         title: post ? post.title : "",
         author: post ? post.author : "",
@@ -84,7 +84,7 @@ const PostForm = ({post, onSubmit}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit(formState); 
+        onPostSubmit(formState); 
         // reset when you submit a new post too 
         setFormState({
             title: "",
@@ -185,33 +185,32 @@ const MiniBlog = () => {
     }
 
     const handleSubmitPost = (formData) => {
-        if (activePost != null) { // update existing post
-            setPosts((prevPosts) =>
-                prevPosts.map((post) =>
-                    post === posts[activePost] ? { ...post, ...formData } : post
-                )
-            );
-        } else { // add new post
+        if (activePost != null) {
+            setPosts((prevPosts) => {
+                const updatedPosts = [...prevPosts]; // create a shallow copy of the array
+                updatedPosts[activePost] = { ...prevPosts[activePost], ...formData }; // update the specific post
+                return updatedPosts;
+            });
+        }else { // add new post
             const newPost = {
                 ...formData,
-                postDate: new Date().toISOString().split("T")[0],
+                postDate: new Date().toISOString().split("T")[0], // add in date value, leave out time
             };
             setPosts((prevPosts) => {
                 const updatedPosts = [...prevPosts, newPost];
-                const newIndex = updatedPosts.length - 1; // calculate the index of the new post
+                const newIndex = updatedPosts.length - 1; // calculate the index of the new post (last added one)
                 setActivePost(newIndex); // set the new post as the active post
-                return updatedPosts; // update the state with the new array
+                return updatedPosts;
             });
             
         }
         setIsEditing(false)
     };
-    
+
     const postList = posts.map((post, index) => {
-        const itemClass = post === posts[activePost] ? 'post-item active' : 'post-item';
         return (
             <li key={index}>
-                <span className={itemClass}>{post.title} </span>
+                <span className={'post-item' + ( activePost === index ? ' active' : '')}>{post.title} </span>
                 <button onClick={() => handleViewPost(index)}>
                     View Post
                 </button>
@@ -222,22 +221,26 @@ const MiniBlog = () => {
   return (
     <>
       <Navi />
-      <h1>MiniBlog</h1>
-      {activePost}
       <div className="mini-blog">
-        <aside>
-            <button onClick={handleCreateNewPost}>Create Post</button>
-            <ul>
-                {postList}
-            </ul>
-        </aside>
-        <main>
-            {activePost != null && !isEditing ? (
-                <PostDetails post={posts[activePost]} onEditPost={handleEditing} />
-            ) : (
-                <PostForm post={posts[activePost]} onSubmit={handleSubmitPost} />
-            )}
-        </main>
+        <h1>MiniBlog</h1>
+        <div className="dev">
+            Active Post: {activePost != null ? activePost : 'none'}
+        </div>
+        <div className="blog-body">
+            <aside>
+                <ul>
+                    {postList}
+                </ul>
+                <button onClick={handleCreateNewPost}>+ Create New Post</button>
+            </aside>
+            <main>
+                {activePost != null && !isEditing ? (
+                    <PostDetails post={posts[activePost]} onEditPost={handleEditing} />
+                ) : (
+                    <PostForm post={posts[activePost]} onPostSubmit={handleSubmitPost} />
+                )}
+            </main>
+        </div>
       </div>
     </>
   );
