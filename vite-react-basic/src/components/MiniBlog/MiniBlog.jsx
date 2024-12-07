@@ -158,7 +158,7 @@ const MiniBlog = () => {
     const [activePost, setActivePost] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
 
-    const activePostIndex = activePost ? posts.findIndex((post) => post === activePost) : null;
+    // const activePostIndex = activePost ? posts.findIndex((post) => post === activePost) : null;
 
     const handleCreateNewPost = () => {
         console.log('Create a New Post')
@@ -169,7 +169,7 @@ const MiniBlog = () => {
     const handleViewPost = (index) => {
         console.log(`View Post: ${index}`)
         setIsEditing(false)
-        setActivePost(posts[index])
+        setActivePost(index)
     }
 
     const handleEditing = () => {
@@ -178,10 +178,10 @@ const MiniBlog = () => {
     }
 
     const handleSubmitPost = (formData) => {
-        if (activePost) { // update existing post
+        if (activePost != null) { // update existing post
             setPosts((prevPosts) =>
                 prevPosts.map((post) =>
-                    post === activePost ? { ...post, ...formData } : post
+                    post === posts[activePost] ? { ...post, ...formData } : post
                 )
             );
         } else { // add new post
@@ -189,14 +189,19 @@ const MiniBlog = () => {
                 ...formData,
                 postDate: new Date().toISOString().split("T")[0],
             };
-            setPosts((prevPosts) => [...prevPosts, newPost])
+            setPosts((prevPosts) => {
+                const updatedPosts = [...prevPosts, newPost];
+                const newIndex = updatedPosts.length - 1; // calculate the index of the new post
+                setActivePost(newIndex); // set the new post as the active post
+                return updatedPosts; // update the state with the new array
+            });
+            
         }
-        setActivePost(null)
         setIsEditing(false)
     };
     
     const postList = posts.map((post, index) => {
-        const itemClass = post === activePost ? 'post-item active' : 'post-item';
+        const itemClass = post === posts[activePost] ? 'post-item active' : 'post-item';
         return (
             <li key={index}>
                 <span className={itemClass}>{post.title} </span>
@@ -211,7 +216,7 @@ const MiniBlog = () => {
     <>
       <Navi />
       <h1>MiniBlog</h1>
-      <div>Active Index: {activePostIndex}</div>
+      {activePost}
       <div className="mini-blog">
         <aside>
             <button onClick={handleCreateNewPost}>Create Post</button>
@@ -220,10 +225,10 @@ const MiniBlog = () => {
             </ul>
         </aside>
         <main>
-            {activePost && !isEditing ? (
-                <PostDetails post={activePost} onEditPost={handleEditing} />
+            {activePost != null && !isEditing ? (
+                <PostDetails post={posts[activePost]} onEditPost={handleEditing} />
             ) : (
-                <PostForm post={activePost} onSubmit={handleSubmitPost} />
+                <PostForm post={posts[activePost]} onSubmit={handleSubmitPost} />
             )}
         </main>
       </div>
