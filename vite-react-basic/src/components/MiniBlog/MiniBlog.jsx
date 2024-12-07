@@ -12,7 +12,7 @@ import seedData from './seedData';
 // [x] move seedData to its own file & import
 // [x] lift formState from PostForm to parent comp. & remove useEffect, handle via props
 // [x] switch from index to Id for posts
-// [ ] split postList into its own subcomp PostList  
+// [x] split postList into its own subcomp PostList  
 // [ ] add ordering and categorization of posts
 // [ ] split subcomponents into component files and import 
 // [ ] handle post deletion (and syncing id counter)
@@ -118,7 +118,9 @@ const PostList = ({ posts, activePostId, onViewPost, onCreateNewPost }) => {
                     </li>
                 ))}
                 <li>
-                    <button onClick={onCreateNewPost}>+ Create New Post</button>
+                    <button onClick={onCreateNewPost}>
+                        + Create New Post
+                    </button>
                 </li>
             </ul>
         </>
@@ -131,18 +133,17 @@ const PostList = ({ posts, activePostId, onViewPost, onCreateNewPost }) => {
 //////////////////////////////////////////////////////////
 
 const MiniBlog = () => {
+    const formDefaults = { title: "", author: "", content: "", featured: false }; // blank form values
     const [posts, setPosts] = useState(seedData);
     const [activePostId, setActivePostId] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    const [formState, setFormState] = useState({
-        title: "", author: "", content: "", featured: false,
-    });
+    const [formState, setFormState] = useState(formDefaults);
     const [idCounter, setIdCounter] = useState(seedData.length);
 
     const handleCreateNewPost = () => { // takes the user to the blank PostForm
         // console.log('Create a New Post')
         setActivePostId(null)
-        setFormState({ title: "", author: "", content: "", featured: false })
+        setFormState(formDefaults)
         setIsEditing(false) 
     }
 
