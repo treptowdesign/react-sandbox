@@ -71,7 +71,7 @@ const PostForm = ({post, onSubmit}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         onSubmit(formState); 
-        // reset
+        // reset when you submit a new post too 
         setFormState({
             title: "",
             author: "",
@@ -133,6 +133,7 @@ const PostForm = ({post, onSubmit}) => {
 const PostDetails = ({post, onEditPost}) => {
     return (
         <div className="post-details">
+            {post.featured && <div className="featured-post">Featured Post</div>}
             <h2>{post.title}</h2>
             <p>Author: {post.author} | Date: {post.postDate}</p>
             <p>{post.content}</p>
