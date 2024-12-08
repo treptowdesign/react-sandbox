@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './Spellbook.sass'
 import spellData from './spellData'
 import Navi from '@/components/Navi/Navi'
@@ -21,6 +21,9 @@ function Spellbook() {
   const [searchText, setSearchText] = useState('')
   const [selectedLevel, setSelectedLevel] = useState('ALL')
   const [selectedSchool, setSelectedSchool] = useState('ALL')
+  const [isSticky, setIsSticky] = useState(false)
+  const [stickyWidth, setStickyWidth] = useState('auto')
+  const stickyRef = useRef(null)
 
   const schoolList = [
     'Abjuration', 'Conjuration', 'Divination', 'Enchantment',
@@ -58,6 +61,37 @@ function Spellbook() {
   const handleClickSpell = (name) => {
     setActiveSpell(spellList.find((s) => s.name === name))
   }
+
+
+  useEffect(() => {
+    let originalOffsetTop = null;
+  
+    const handleScroll = () => {
+      const stickyElement = stickyRef.current
+      if (!stickyElement) return
+      if (originalOffsetTop === null) {
+        // record the initial top position of the sticky element relative to the document
+        originalOffsetTop = stickyElement.getBoundingClientRect().top + window.pageYOffset
+      }
+      const scrollTop = window.pageYOffset
+      const parentWidth = stickyElement.offsetWidth
+      // stick the element when scrolled past its original position
+      if (scrollTop >= originalOffsetTop && !isSticky) {
+        setStickyWidth(parentWidth)
+        setIsSticky(true)
+      }
+      // unstick the element when scrolled above its original position
+      else if (scrollTop < originalOffsetTop && isSticky) {
+        setIsSticky(false)
+        setStickyWidth('auto')
+      }
+    };
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [isSticky])
+  
 
   return (
     <>
@@ -103,21 +137,31 @@ function Spellbook() {
                     </div>
                 </div>
                 <ul>
-                    {filteredSpells.map((spell, index) => (
+                {filteredSpells.length > 0 ? (
+                    filteredSpells.map((spell, index) => (
                         <li key={index}>
-                            <button className="spell-btn" onClick={() => handleClickSpell(spell.name)}>
-                                <span className={'marker ' + spell.school}>
-                                    {spell.level === 'cantrip' ? '0' : spell.level}
-                                </span>
-                                {spell.name}
-                            </button>
+                        <button className="spell-btn" onClick={() => handleClickSpell(spell.name)}>
+                            <span className={'marker ' + spell.school}>
+                            {spell.level === 'cantrip' ? '0' : spell.level}
+                            </span>
+                            {spell.name}
+                        </button>
                         </li>
-                    ))}
+                    ))
+                    ) : (
+                    <div className="no-spells-message">No spells match your criteria.</div>
+                    )}
                 </ul>
             </aside>
             <main>
+            <div
+                id="sticky-element"
+                ref={stickyRef}
+                className={`spell-details ${isSticky ? 'sticky' : ''}`}
+                style={isSticky ? { width: stickyWidth } : {}}
+            >
                 {activeSpell ? (
-                    <div className="spell-details">
+                    <div>
                         <h2>{activeSpell.name}</h2>
                         <ul>
                             <li><b>Type: </b> {activeSpell.type} </li>
@@ -136,6 +180,7 @@ function Spellbook() {
                         <p>Select a Spell from the List</p>
                     </div>
                 )}
+                </div>
             </main>
         </div>
     </>

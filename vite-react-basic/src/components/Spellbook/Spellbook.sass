@@ -13,6 +13,7 @@
     max-width: 100%
     border: dotted 1px #666
     text-align: left
+    min-height: 100vh
     aside 
         width: 260px
         padding: 0 20px
@@ -31,7 +32,7 @@
             width: 100%
     main 
         flex: 1
-        padding: 0 20px
+        
         ul 
             padding: 0
         li 
@@ -51,6 +52,20 @@
                 width: 50%
                 label 
                     margin-bottom: 0
+    .spell-details 
+        position: relative
+        // border: solid 1px #fff
+        // background-color: #242424
+        padding: 20px
+        box-sizing: border-box
+        width: 100%
+        &.sticky 
+            position: fixed
+            top: 0
+            max-height: 100vh
+            overflow-y: scroll
+        h2 
+            margin-top: 0
     .spell-btn
         display: flex 
         gap: 10px
@@ -83,6 +98,9 @@
                 background-color: #7E3AF2
             &.transmutation
                 background-color: #C27803
+    .no-spells-message
+        font-size: 14px 
+        font-style: italic
 
 
 
