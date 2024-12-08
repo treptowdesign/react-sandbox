@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react'
-import { AccessAlarm, Home, Delete, MoveToInbox, Mail } from '@mui/icons-material';
+import { AccessAlarm, Home, Delete, MoveToInbox, Mail, Menu, Close } from '@mui/icons-material';
+import { styled } from '@mui/material/styles';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 import Chip from '@mui/material/Chip';
@@ -18,7 +19,14 @@ import ListItemText from '@mui/material/ListItemText';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-
+import Fab from '@mui/material/Fab';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid2';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Paper from '@mui/material/Paper';
 
 
 import './App.css'
@@ -66,14 +74,44 @@ function App() {
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
-  // Card
-  const bull = (
-    <Box
-      component="span"
-      sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-    >
-      •
-    </Box>
+  // Snackbar 
+  const [openSb, setOpenSb] = React.useState(false);
+  const handleClickSb = () => {
+    setOpenSb(true);
+  };
+  const handleCloseSb = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSb(false);
+  };
+
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    ...theme.applyStyles('dark', {
+      backgroundColor: '#1A2027',
+    }),
+  }));
+
+
+  const action = (
+    <React.Fragment>
+      <Button color="secondary" size="small" onClick={handleCloseSb}>
+        UNDO
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleCloseSb}
+      >
+        <Close fontSize="small" />
+      </IconButton>
+    </React.Fragment>
   );
 
   const DrawerList = (
@@ -108,49 +146,131 @@ function App() {
 
   return (
     <>
+      <Box sx={{ flexGrow: 1, textAlign: 'left' }}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            >
+              <Home />
+            </IconButton>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Home
+            </Typography>
+            <Button color="inherit">Login</Button>
+          </Toolbar>
+        </AppBar>
+      </Box>
       <ButtonGroup 
-        variant="contained" aria-label="Basic button group"
+        variant="outlined" aria-label="Basic button group"
         sx={ButtonGroupStyles}
       >
-        <Button sx={btnStyles} color="error" onClick={() => alert('Alarm')}>
+        <Button sx={btnStyles} onClick={() => alert('Alarm')}>
           <AccessAlarm sx={{ fontSize: '16px' }} /> Alert
         </Button>
-        <Button sx={btnStyles} color="secondary" onClick={handleOpenModal}>
+        <Button sx={btnStyles}  onClick={handleOpenModal}>
           <Home sx={{ fontSize: '16px' }} /> Modal
         </Button>
-        <Button sx={btnStyles} onClick={toggleDrawer(true)}>
-          <Delete sx={{ fontSize: '16px' }} />Three
+        <Button sx={btnStyles} onClick={handleClickSb}>
+          <Delete sx={{ fontSize: '16px' }} />Snackbar
         </Button>
       </ButtonGroup>
 
-      <h1>Vite + React + Material UI</h1>
-
-      <Card sx={{ minWidth: 275 }}>
-        <CardContent>
-          <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-            Word of the Day
-          </Typography>
-          <Typography variant="h5" component="div">
-            be{bull}nev{bull}o{bull}lent
-          </Typography>
-          <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>adjective</Typography>
-          <Typography variant="body2">
-            well meaning and kindly.
-            <br />
-            {'"a benevolent smile"'}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small">Learn More</Button>
-        </CardActions>
-      </Card>
+      <Typography variant="h2" component="h1">
+        Vite + React + Material UI
+      </Typography>
+      <Typography variant="subtitle1" gutterBottom>
+        Components
+      </Typography>
 
 
-      <Stack direction="row" spacing={1} sx={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-        <Button variant="contained"onClick={() => setCount(count - 1)}>Decrement</Button> 
-        <Chip label={count} color="primary" />
-        <Button variant="contained"onClick={() => setCount(count + 1)}>Increment</Button>
-      </Stack>
+
+      <Container maxWidth="md">
+
+        <Box sx={{ flexGrow: 1}}>
+          <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
+            <Grid size={{xs: 12, sm: 6, lg: 4}}>
+              <Card sx={{ textAlign:'left' }}>
+                <CardContent>
+                  <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
+                    Word of the Day
+                  </Typography>
+                  <Typography variant="h5" component="div">
+                    Lorem Ipsum Dolor It Semet!
+                  </Typography>
+                  <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>adjective</Typography>
+                  <Typography variant="body2">
+                    well meaning and kindly.
+                    <br />
+                    {'"a benevolent smile"'}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small">Learn More</Button>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid size={{xs: 12, sm: 6, lg: 4}}>
+              <Card sx={{ textAlign:'left', minHeight: '100%' }}>
+                <CardContent>
+                  <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
+                    Word of the Day
+                  </Typography>
+                  <Typography variant="h5" component="div">
+                    Lorem Dolor It 
+                  </Typography>
+                  <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>adjective</Typography>
+                  <Typography variant="body2">
+                    well meaning and kindly.
+                    <br />
+                    {'"a benevolent smile"'}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small">Learn More</Button>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid size={{xs: 12, sm: 6, lg: 4}}>
+              <Card sx={{ textAlign:'left' }}>
+                <CardContent>
+                  <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
+                    Word of the Day
+                  </Typography>
+                  <Typography variant="h5" component="div">
+                    Lorem Ipsum Dolor It Semet!
+                  </Typography>
+                  <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>adjective</Typography>
+                  <Typography variant="body2">
+                    well meaning and kindly.
+                    <br />
+                    {'"a benevolent smile"'}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small">Learn More</Button>
+                </CardActions>
+              </Card>
+            </Grid>
+            <Grid size={12}>
+              <Stack direction="row" spacing={1} sx={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                <Button variant="contained"onClick={() => setCount(count - 1)}>Decrement</Button> 
+                <Chip label={count} color="primary" />
+                <Button variant="contained"onClick={() => setCount(count + 1)}>Increment</Button>
+              </Stack>
+            </Grid>
+          </Grid>
+        </Box>
+
+        
+
+      </Container>
+
+      
 
 
       <Modal
@@ -173,6 +293,23 @@ function App() {
       <Drawer open={open} onClose={toggleDrawer(false)}>
         {DrawerList}
       </Drawer>
+
+      {/* <Button onClick={handleClickSb}>Open Snackbar</Button> */}
+      <Snackbar
+        open={openSb}
+        autoHideDuration={6000}
+        onClose={handleCloseSb}
+        message="Note archived"
+        action={action}
+      />
+
+      <Fab
+        aria-label="menu"
+        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+        onClick={toggleDrawer(true)}
+      >
+        <Menu />
+      </Fab>
 
     </>
   )
