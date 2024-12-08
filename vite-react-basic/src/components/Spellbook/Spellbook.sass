@@ -26,8 +26,9 @@
             width: 100%
             text-align: left
         input[type=text]
+            box-sizing: border-box
             padding: 0.6em 1.2em
-            width: auto
+            width: 100%
     main 
         flex: 1
         padding: 0 20px
@@ -35,6 +36,21 @@
             padding: 0
         li 
             display: block
+    .control-bar 
+        display: flex
+        flex-wrap: wrap
+        .control
+            label 
+                display: block 
+                margin-bottom: 5px
+            &:nth-child(1)
+                width: 100%
+                padding-bottom: 10px
+            &:nth-child(2),
+            &:nth-child(3)
+                width: 50%
+                label 
+                    margin-bottom: 0
 
 
 
