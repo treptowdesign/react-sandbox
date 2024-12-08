@@ -161,7 +161,7 @@ function Spellbook() {
                 style={isSticky ? { width: stickyWidth } : {}}
             >
                 {activeSpell ? (
-                    <div>
+                    <div className="spell-details-inner">
                         <h2>{activeSpell.name}</h2>
                         <ul>
                             <li><b>Type: </b> {activeSpell.type} </li>
