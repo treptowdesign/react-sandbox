@@ -22,6 +22,11 @@ function Spellbook() {
   const [selectedLevel, setSelectedLevel] = useState('ALL')
   const [selectedSchool, setSelectedSchool] = useState('ALL')
 
+  const schoolList = [
+    'Abjuration', 'Conjuration', 'Divination', 'Enchantment',
+    'Evocation', 'Illusion', 'Necromancy', 'Transmutation'
+  ];
+
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase()
     setSearchText(query)
@@ -75,7 +80,7 @@ function Spellbook() {
                             onChange={handleSearch} 
                         />
                     </div>
-                    <div class="control">
+                    <div className="control">
                         <label htmlFor="level-filter">Level</label>
                         <select id="level-filter" name="level-filter" value={selectedLevel} onChange={handleLevelChange}>
                             <option value="ALL">All Levels</option>
@@ -87,22 +92,16 @@ function Spellbook() {
                             ))}
                         </select>
                     </div>
-                    <div class="control">
+                    <div className="control">
                         <label htmlFor="school-filter">School</label>
                         <select id="school-filter" name="school-filter" value={selectedSchool} onChange={handleSchoolChange}>
                             <option value="ALL">All Schools</option>
-                            <option value="abjuration">Abjuration</option>
-                            <option value="conjuration">Conjuration</option>
-                            <option value="divination">Divination</option>
-                            <option value="enchantment">Enchantment</option>
-                            <option value="evocation">Evocation</option>
-                            <option value="illusion">Illusion</option>
-                            <option value="necromancy">Necromancy</option>
-                            <option value="transmutation">Transmutation</option>
+                            {schoolList.map((school, index) => (
+                                <option key={index} value={school.toLowerCase()}>{school}</option>
+                            ))}
                         </select>
                     </div>
                 </div>
-                
                 <ul>
                     {filteredSpells.map((spellItem, index) => (
                         <li key={index}>
