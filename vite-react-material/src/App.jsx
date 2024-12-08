@@ -15,9 +15,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 
-// import InboxIcon from '@mui/icons-material/MoveToInbox';
-// import MailIcon from '@mui/icons-material/Mail';
+
 
 import './App.css'
 
@@ -27,7 +29,7 @@ import './App.css'
 // Styles
 /////////////////////////////////////////////////////////////////////
 const ButtonGroupStyles = {
-  gap: 1,
+  gap: 0,
 }
 
 const btnStyles = {
@@ -64,6 +66,16 @@ function App() {
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
+  // Card
+  const bull = (
+    <Box
+      component="span"
+      sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
+    >
+      •
+    </Box>
+  );
+
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
@@ -100,10 +112,10 @@ function App() {
         variant="contained" aria-label="Basic button group"
         sx={ButtonGroupStyles}
       >
-        <Button sx={btnStyles} onClick={() => alert('Alarm')}>
+        <Button sx={btnStyles} color="error" onClick={() => alert('Alarm')}>
           <AccessAlarm sx={{ fontSize: '16px' }} /> Alert
         </Button>
-        <Button sx={btnStyles} onClick={handleOpenModal}>
+        <Button sx={btnStyles} color="secondary" onClick={handleOpenModal}>
           <Home sx={{ fontSize: '16px' }} /> Modal
         </Button>
         <Button sx={btnStyles} onClick={toggleDrawer(true)}>
@@ -112,6 +124,26 @@ function App() {
       </ButtonGroup>
 
       <h1>Vite + React + Material UI</h1>
+
+      <Card sx={{ minWidth: 275 }}>
+        <CardContent>
+          <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
+            Word of the Day
+          </Typography>
+          <Typography variant="h5" component="div">
+            be{bull}nev{bull}o{bull}lent
+          </Typography>
+          <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>adjective</Typography>
+          <Typography variant="body2">
+            well meaning and kindly.
+            <br />
+            {'"a benevolent smile"'}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <Button size="small">Learn More</Button>
+        </CardActions>
+      </Card>
 
 
       <Stack direction="row" spacing={1} sx={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
