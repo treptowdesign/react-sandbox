@@ -32,8 +32,11 @@ function Spellbook() {
             <aside>
                 <h2>Spell List</h2>
                 <div className="control">
+                    <label htmlFor="search-input">Search Spells</label>
                     <input
+                        id="search-input"
                         type="text"
+                        name="search"
                         placeholder="Search Spells"
                         value={searchText}
                         onChange={handleSearch} 
