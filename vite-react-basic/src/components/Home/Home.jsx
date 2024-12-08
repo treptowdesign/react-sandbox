@@ -29,6 +29,7 @@ function App() {
             <h2>ToDo List:</h2>
             <ul>
               <li>Setup Express backend w/ SQLite</li>
+              <li>Explore component libs: Material UI, Chakra, Ant D</li>
               <li>New Project: Sliding Form</li>
               <li>New Project: Calendar/Event Log</li>
               <li>MiniBlog: Convert to D&D Character Feature Log</li>
