@@ -8,7 +8,8 @@ import Navi from '@/components/Navi/Navi'
 //////////////////////////////////////////////////////////
 
 // ToDo
-// [ ] add filter options for class, spell level, school, etc.
+// [x] add filter options for spell level & school
+// [ ] add filter for class
 
 //////////////////////////////////////////////////////////
 // Main Component
@@ -21,6 +22,7 @@ function Spellbook() {
   const [searchText, setSearchText] = useState('')
   const [selectedLevel, setSelectedLevel] = useState('ALL')
   const [selectedSchool, setSelectedSchool] = useState('ALL')
+  // sticky...
   const [isSticky, setIsSticky] = useState(false)
   const [stickyWidth, setStickyWidth] = useState('auto')
   const stickyRef = useRef(null)
