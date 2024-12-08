@@ -103,10 +103,13 @@ function Spellbook() {
                     </div>
                 </div>
                 <ul>
-                    {filteredSpells.map((spellItem, index) => (
+                    {filteredSpells.map((spell, index) => (
                         <li key={index}>
-                            <button onClick={() => handleClickSpell(spellItem.name)}>
-                                {spellItem.name} ({spellItem.level})
+                            <button className="spell-btn" onClick={() => handleClickSpell(spell.name)}>
+                                <span className={'marker ' + spell.school}>
+                                    {spell.level === 'cantrip' ? '0' : spell.level}
+                                </span>
+                                {spell.name}
                             </button>
                         </li>
                     ))}
