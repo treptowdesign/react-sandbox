@@ -3,6 +3,16 @@ import './Spellbook.sass'
 import spellData from './spellData'
 import Navi from '@/components/Navi/Navi'
 
+//////////////////////////////////////////////////////////
+// Notes
+//////////////////////////////////////////////////////////
+
+// ToDo
+// [ ] add filter options for class, spell level, school, etc.
+
+//////////////////////////////////////////////////////////
+// Main Component
+//////////////////////////////////////////////////////////
 
 function Spellbook() {
   const [spellList, setSpellList] = useState(spellData);
@@ -14,7 +24,7 @@ function Spellbook() {
     const query = event.target.value.toLowerCase(); 
     setSearchText(query);
     setFilteredSpells(
-      spellList.filter((spell) => spell.name.toLowerCase().includes(query)) // filter spells by name
+      spellList.filter((spell) => spell.name.toLowerCase().includes(query)) 
     );
   };
 
@@ -37,7 +47,7 @@ function Spellbook() {
                         id="search-input"
                         type="text"
                         name="search"
-                        placeholder="Search Spells"
+                        placeholder="Search Spells by Name"
                         value={searchText}
                         onChange={handleSearch} 
                     />
@@ -46,7 +56,7 @@ function Spellbook() {
                     {filteredSpells.map((spellItem, index) => (
                         <li key={index}>
                             <button onClick={() => handleClickSpell(spellItem.name)}>
-                                {spellItem.name}
+                                {spellItem.name} ({spellItem.level})
                             </button>
                         </li>
                     ))}
@@ -64,6 +74,7 @@ function Spellbook() {
                             <li><b>Range: </b> {activeSpell.range} </li>
                             <li><b>Components: </b> {activeSpell.components.raw} </li>
                         </ul>
+                        <p><b>Description:</b></p>
                         <p>{activeSpell.description}</p>
                     </div>
                 ) : (
