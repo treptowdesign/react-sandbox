@@ -1,0 +1,31 @@
+.carousel
+  border: solid 1px rgba(255, 255, 255, 0.4)
+  position: relative
+  overflow: hidden
+  transition: height 0.5s ease-in-out
+  .panel
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out
+    opacity: 0
+    visibility: hidden
+    &.active
+      transform: translateX(0)
+      opacity: 1
+      visibility: visible
+    &.previous
+      transform: translateX(-100%)
+      opacity: 1
+      visibility: visible
+    &.next
+      transform: translateX(100%)
+      opacity: 1
+      visibility: visible
+  .prev-button,
+  .next-button 
+    position: relative
+    z-index: 100
+    background-color: #646cff
+    color: #111 
