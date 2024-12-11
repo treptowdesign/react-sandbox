@@ -6,6 +6,7 @@ import TicTacToe from '@/components/TicTacToe/TicTacToe';
 import ConnectFour from '@/components/ConnectFour/ConnectFour';
 import MiniBlog from '@/components/MiniBlog/MiniBlog';
 import Spellbook from '@/components/Spellbook/Spellbook';
+import Baseline from '@/components/Baseline/Baseline';
 import './App.sass'
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/tic-tac-toe" element={<TicTacToe />} />
         <Route path="/connect-four" element={<ConnectFour />} />
         <Route path="/mini-blog" element={<MiniBlog />} />
+        <Route path="/baseline" element={<Baseline />} />
       </Routes>
     </Router>
   );

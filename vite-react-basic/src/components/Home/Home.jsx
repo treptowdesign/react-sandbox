@@ -25,21 +25,25 @@ function App() {
         <p>MiniProject Sandbox</p>
         
         <div className="card">
-          <div className="todo">
-            <h2>ToDo List:</h2>
-            <ul>
-              <li>Setup Express backend w/ SQLite</li>
-              <li>Explore component libs: Material UI, Chakra, Ant D</li>
-              <li>New Project: Sliding Form</li>
-              <li>New Project: Calendar/Event Log</li>
-              <li>MiniBlog: Convert to D&D Character Feature Log</li>
-              <li>Spellbook: Level/School/Cladd filters</li>
-              <li>General: Implement react-transition-group</li>
-            </ul>
+          <div className="card-content">
+            <div className="todo">
+              <h2>ToDo List:</h2>
+              <ul>
+                <li>Setup Express backend w/ SQLite</li>
+                <li>Explore component libs: Material UI, Chakra UI</li>
+                <li>New Project: Sliding Form</li>
+                <li>New Project: Calendar/Event Log</li>
+                <li>MiniBlog: Convert to D&D Character Feature Log</li>
+                <li>Spellbook: Level/School/Cladd filters</li>
+                <li>General: Implement react-transition-group</li>
+              </ul>
+            </div>
           </div>
-          <p>Count: {count}</p>
+          <div className="card-footer">
             <button onClick={() => setCount(count + 1)}>Increment</button>
+            <span>Count: {count}</span>
             <button onClick={() => setCount(count - 1)}>Decrement</button>
+          </div>
         </div>
       </div>
     </>

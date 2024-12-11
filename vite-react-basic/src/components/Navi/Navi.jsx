@@ -11,6 +11,7 @@ function Navi() {
         <li><Link to="/connect-four">ConnectFour</Link></li>
         <li><Link to="/mini-blog">MiniBlog</Link></li>
         <li><Link to="/spellbook">Spellbook</Link></li>
+        <li><Link to="/baseline">Baseline</Link></li>
       </ul>
     );
 }
