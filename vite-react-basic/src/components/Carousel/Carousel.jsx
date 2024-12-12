@@ -8,7 +8,6 @@ const Carousel = ({ panels }) => {
     const carouselRef = useRef(null);
   
     useEffect(() => {
-      // Update carousel height based on the active panel
       if (carouselRef.current) {
         const activePanel = carouselRef.current.querySelector('.panel.active');
         if (activePanel) {
@@ -42,9 +41,7 @@ const Carousel = ({ panels }) => {
                 style={{ height: carouselHeight }}
             >
                 {panels.map((panel, index) => {
-                // Calculate position class based on index and direction
                 let positionClass = '';
-
                 if (index === activeIndex) {
                     positionClass = 'active';
                 } else if(index > activeIndex){
@@ -53,7 +50,7 @@ const Carousel = ({ panels }) => {
                     positionClass = 'previous';
                 }
                 
-                // Infinite (working logic)
+                // Infinite logic
                 // if (index === activeIndex) {
                 //     positionClass = 'active';
                 // } else if (index === (activeIndex - 1 + panels.length) % panels.length ) {
@@ -63,7 +60,6 @@ const Carousel = ({ panels }) => {
                 // } else {
                 //     positionClass = (direction === 'next') ? 'next' : 'previous'; 
                 // }
-                // end Infinite logic
         
                 return (
                     <div
@@ -95,7 +91,14 @@ const Carousel = ({ panels }) => {
                 <ul>
                 {panels.map((panel, index) => {
                     return (
-                        <li><button onClick={() => handleSkip(index)}>{index}</button></li>
+                        <li key={index}>
+                          <button 
+                            className={index === activeIndex ? 'active' : ''} 
+                            onClick={() => handleSkip(index)}
+                          >
+                            {index + 1}
+                          </button>
+                        </li>
                     );
                 })}
                 </ul>
@@ -107,9 +110,6 @@ const Carousel = ({ panels }) => {
 
 const RenderCarousel = () => {
     const panels = [
-        // <div style={{ background: 'red', minHeight: '300px' }}>Panel 1</div>,
-        // <div style={{ background: 'blue', minHeight: '500px' }}>Panel 2</div>,
-        // <div style={{ background: 'green', minHeight: '400px' }}>Panel 3</div>,
         <div>
             <h4>Panel 1</h4>
             <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Aipsum efficitur ac odio; faucibus porta phasellus. Diam platea eu; dolor suspendisse velit etiam nascetur? Cubilia pretium risus cubilia tortor maximus.</p>
