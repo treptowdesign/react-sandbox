@@ -121,7 +121,7 @@ const RenderCarousel = () => {
         </div>,
         <div>
             <h4>Panel 3</h4>
-            <p>Id blandit malesuada potenti nulla habitant. Urna ante conubia cras dolor nulla urna fermentum. Fusce aptent tortor iaculis turpis mus nostra fringilla curabitur. Fermentum taciti elit morbi, tellus scelerisque finibus diam. Mus quam nisi nisi litora magnis, maximus consectetur pulvinar? Interdum finibus facilisis ridiculus magnis placerat tristique.</p>
+            <div className="faux-image"><span>IMAGE HERE</span></div>
         </div>,
         <div>
             <h4>Panel 4</h4>
@@ -131,7 +131,8 @@ const RenderCarousel = () => {
         </div>,
         <div>
             <h4>Panel 5</h4>
-            <p>Blandit montes a aliquet vitae himenaeos nam dolor. Ultricies habitant sapien nisi class tortor nisl tortor commodo. Varius dolor cubilia ullamcorper elit tellus. Sagittis congue semper turpis praesent pretium. Nam ligula luctus sit nisi; blandit penatibus arcu quis. Lectus libero odio torquent, leo lacus facilisis velit himenaeos.Id blandit malesuada potenti nulla habitant. Urna ante conubia cras dolor nulla urna fermentum. Fusce aptent tortor iaculis turpis mus nostra fringilla curabitur. Fermentum taciti elit morbi, tellus scelerisque finibus diam. Mus quam nisi nisi litora magnis, maximus consectetur pulvinar? Interdum finibus facilisis ridiculus magnis placerat tristique.</p>
+            <p>Blandit montes a aliquet vitae himenaeos nam dolor. Ultricies habitant sapien nisi class tortor nisl tortor commodo. </p>
+            <div className="faux-image small"><span>IMAGE HERE</span></div>
         </div>,
         <div>
             <h4>Panel 6</h4>
@@ -140,6 +141,7 @@ const RenderCarousel = () => {
         <div>
             <h4>Panel 7</h4>
             <p>Urna ante conubia cras dolor.</p>
+            <div className="faux-image"><span>IMAGE HERE</span></div>
         </div>,
     ];
     return (

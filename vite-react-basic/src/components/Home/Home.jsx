@@ -24,7 +24,7 @@ function App() {
         <h1>Vite + React</h1>
         <p>MiniProject Sandbox</p>
         
-        <div className="card">
+        <div className="card fullwidth">
           <div className="card-content">
             <div className="todo">
               <h2>ToDo List:</h2>
