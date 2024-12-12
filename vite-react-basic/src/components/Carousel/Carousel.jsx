@@ -28,58 +28,80 @@ const Carousel = ({ panels }) => {
         prevIndex === 0 ? panels.length - 1 : prevIndex - 1
       );
     };
+    
+    const handleSkip = (targetIndex) => {
+        setDirection((targetIndex > activeIndex) ? 'next' : 'prev');
+        setActiveIndex(targetIndex);
+    }
   
     return (
-      <div
-        className="carousel"
-        ref={carouselRef}
-        style={{ height: carouselHeight }}
-      >
-        {panels.map((panel, index) => {
-          // Calculate position class based on index and direction
-          let positionClass = '';
-  
-          if (index === activeIndex) {
-            positionClass = 'active';
-          } else if (
-            direction === 'next' &&
-            index === (activeIndex - 1 + panels.length) % panels.length
-          ) {
-            positionClass = 'previous';
-          } else if (
-            direction === 'prev' &&
-            index === (activeIndex + 1) % panels.length
-          ) {
-            positionClass = 'next';
-          }
-  
-          return (
+        <>
             <div
-              key={index}
-              className={`panel ${positionClass}`}
-              style={{
-                transform:
-                  positionClass === 'active'
-                    ? 'translateX(0)'
-                    : positionClass === 'previous'
-                    ? 'translateX(-100%)'
-                    : positionClass === 'next'
-                    ? 'translateX(100%)'
-                    : 'translateX(100%)', // <=  Fix for going forward (translateX(100%))
-              }}
+                className={`carousel dir-${direction}`}
+                ref={carouselRef}
+                style={{ height: carouselHeight }}
             >
-              {panel}
+                {panels.map((panel, index) => {
+                // Calculate position class based on index and direction
+                let positionClass = '';
+
+                if (index === activeIndex) {
+                    positionClass = 'active';
+                } else if(index > activeIndex){
+                    positionClass = 'next';
+                } else if(index < activeIndex){
+                    positionClass = 'previous';
+                }
+                
+                // Infinite (working logic)
+                // if (index === activeIndex) {
+                //     positionClass = 'active';
+                // } else if (index === (activeIndex - 1 + panels.length) % panels.length ) {
+                //     positionClass = 'previous';
+                // } else if ( index === (activeIndex + 1) % panels.length ) {
+                //     positionClass = 'next';
+                // } else {
+                //     positionClass = (direction === 'next') ? 'next' : 'previous'; 
+                // }
+                // end Infinite logic
+        
+                return (
+                    <div
+                    key={index}
+                    className={`panel ${positionClass}`}
+                    style={{
+                        transform:
+                        positionClass === 'active'
+                            ? 'translateX(0)'
+                            : positionClass === 'previous'
+                            ? 'translateX(-100%)'
+                            : positionClass === 'next'
+                            ? 'translateX(100%)'
+                            : '',
+                    }}
+                    >
+                    {panel}
+                    </div>
+                );
+                })}
+                <button className="prev-button" disabled={activeIndex === 0} onClick={handlePrevious}>
+                Previous
+                </button>
+                <button className="next-button" disabled={activeIndex === panels.length -1} onClick={handleNext}>
+                Next
+                </button>
             </div>
-          );
-        })}
-        <button className="prev-button" onClick={handlePrevious}>
-          Previous ({(activeIndex - 1 + panels.length) % panels.length})
-        </button>
-        <button>{activeIndex}</button>
-        <button className="next-button" onClick={handleNext}>
-          Next ({(activeIndex + 1) % panels.length})
-        </button>
-      </div>
+            <div className="dots">
+                <ul>
+                {panels.map((panel, index) => {
+                    return (
+                        <li><button onClick={() => handleSkip(index)}>{index}</button></li>
+                    );
+                })}
+                </ul>
+            </div>
+        </>
+      
     );
   };
 
@@ -88,9 +110,30 @@ const RenderCarousel = () => {
         // <div style={{ background: 'red', minHeight: '300px' }}>Panel 1</div>,
         // <div style={{ background: 'blue', minHeight: '500px' }}>Panel 2</div>,
         // <div style={{ background: 'green', minHeight: '400px' }}>Panel 3</div>,
-        <div style={{ padding: '80px 40px 40px 40px' }}>Lorem ipsum odor amet, consectetuer adipiscing elit. Aipsum efficitur ac odio; faucibus porta phasellus. Diam platea eu; dolor suspendisse velit etiam nascetur? Cubilia pretium risus cubilia tortor maximus.</div>,
-        <div style={{ padding: '80px 40px 40px 40px' }}>Blandit montes a aliquet vitae himenaeos nam dolor. Ultricies habitant sapien nisi class tortor nisl tortor commodo. Varius dolor cubilia ullamcorper elit tellus. Sagittis congue semper turpis praesent pretium. Nam ligula luctus sit nisi; blandit penatibus arcu quis. Lectus libero odio torquent, leo lacus facilisis velit himenaeos.Id blandit malesuada potenti nulla habitant. Urna ante conubia cras dolor nulla urna fermentum. Fusce aptent tortor iaculis turpis mus nostra fringilla curabitur. Fermentum taciti elit morbi, tellus scelerisque finibus diam. Mus quam nisi nisi litora magnis, maximus consectetur pulvinar? Interdum finibus facilisis ridiculus magnis placerat tristique.</div>,
-        <div style={{ padding: '80px 40px 40px 40px' }}>Id blandit malesuada potenti nulla habitant. Urna ante conubia cras dolor nulla urna fermentum. Fusce aptent tortor iaculis turpis mus nostra fringilla curabitur. Fermentum taciti elit morbi, tellus scelerisque finibus diam. Mus quam nisi nisi litora magnis, maximus consectetur pulvinar? Interdum finibus facilisis ridiculus magnis placerat tristique.</div>,
+        <div>
+            <h4>Panel 1</h4>
+            <p>Lorem ipsum odor amet, consectetuer adipiscing elit. Aipsum efficitur ac odio; faucibus porta phasellus. Diam platea eu; dolor suspendisse velit etiam nascetur? Cubilia pretium risus cubilia tortor maximus.</p>
+        </div>,
+        <div>
+            <h4>Panel 2</h4>
+            <p>Blandit montes a aliquet vitae himenaeos nam dolor. Ultricies habitant sapien nisi class tortor nisl tortor commodo. Varius dolor cubilia ullamcorper elit tellus. Sagittis congue semper turpis praesent pretium. Nam ligula luctus sit nisi; blandit penatibus arcu quis. Lectus libero odio torquent, leo lacus facilisis velit himenaeos.Id blandit malesuada potenti nulla habitant. Urna ante conubia cras dolor nulla urna fermentum. Fusce aptent tortor iaculis turpis mus nostra fringilla curabitur. Fermentum taciti elit morbi, tellus scelerisque finibus diam. Mus quam nisi nisi litora magnis, maximus consectetur pulvinar? Interdum finibus facilisis ridiculus magnis placerat tristique.</p>
+        </div>,
+        <div>
+            <h4>Panel 3</h4>
+            <p>Id blandit malesuada potenti nulla habitant. Urna ante conubia cras dolor nulla urna fermentum. Fusce aptent tortor iaculis turpis mus nostra fringilla curabitur. Fermentum taciti elit morbi, tellus scelerisque finibus diam. Mus quam nisi nisi litora magnis, maximus consectetur pulvinar? Interdum finibus facilisis ridiculus magnis placerat tristique.</p>
+        </div>,
+        <div>
+            <h4>Panel 4</h4>
+            <p>Velit blandit etiam etiam; porta mi litora.</p>
+        </div>,
+        <div>
+            <h4>Panel 5</h4>
+            <p>Blandit montes a aliquet vitae himenaeos nam dolor. Ultricies habitant sapien nisi class tortor nisl tortor commodo. Varius dolor cubilia ullamcorper elit tellus. Sagittis congue semper turpis praesent pretium. Nam ligula luctus sit nisi; blandit penatibus arcu quis. Lectus libero odio torquent, leo lacus facilisis velit himenaeos.Id blandit malesuada potenti nulla habitant. Urna ante conubia cras dolor nulla urna fermentum. Fusce aptent tortor iaculis turpis mus nostra fringilla curabitur. Fermentum taciti elit morbi, tellus scelerisque finibus diam. Mus quam nisi nisi litora magnis, maximus consectetur pulvinar? Interdum finibus facilisis ridiculus magnis placerat tristique.</p>
+        </div>,
+        <div>
+            <h4>Panel 6</h4>
+            <p>Id blandit malesuada potenti nulla habitant. Urna ante conubia cras dolor nulla urna fermentum. Fusce aptent tortor iaculis turpis mus nostra fringilla curabitur. Fermentum taciti elit morbi, tellus scelerisque finibus diam. Mus quam nisi nisi litora magnis, maximus consectetur pulvinar? Interdum finibus facilisis ridiculus magnis placerat tristique.</p>
+        </div>,
     ];
     return (
         <Carousel panels={panels} />
