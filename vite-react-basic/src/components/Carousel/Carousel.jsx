@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './Carousel.sass';
+import Navi from '@/components/Navi/Navi'
 
 const Carousel = ({ panels }) => {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -125,6 +126,8 @@ const RenderCarousel = () => {
         <div>
             <h4>Panel 4</h4>
             <p>Velit blandit etiam etiam; porta mi litora.</p>
+            <h4>Panel 4</h4>
+            <p>Velit blandit etiam etiam; porta mi litora.Fusce aptent tortor iaculis turpis mus nostra fringilla curabitur. Fermentum taciti elit morbi, tellus scelerisque finibus diam. Mus quam nisi nisi litora magnis, maximus consectetur pulvinar? Interdum finibus facilisis ridiculus magnis placerat tristique.</p>
         </div>,
         <div>
             <h4>Panel 5</h4>
@@ -134,9 +137,17 @@ const RenderCarousel = () => {
             <h4>Panel 6</h4>
             <p>Id blandit malesuada potenti nulla habitant. Urna ante conubia cras dolor nulla urna fermentum. Fusce aptent tortor iaculis turpis mus nostra fringilla curabitur. Fermentum taciti elit morbi, tellus scelerisque finibus diam. Mus quam nisi nisi litora magnis, maximus consectetur pulvinar? Interdum finibus facilisis ridiculus magnis placerat tristique.</p>
         </div>,
+        <div>
+            <h4>Panel 7</h4>
+            <p>Urna ante conubia cras dolor.</p>
+        </div>,
     ];
     return (
+      <>
+        <Navi />
         <Carousel panels={panels} />
+      </>
+        
     );
 }
 
