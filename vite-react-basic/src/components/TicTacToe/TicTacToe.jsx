@@ -104,7 +104,6 @@ const TicTacToe = () => {
     // computeds
     const xIsNext = currentMove % 2 === 0;
     const currentSquares = history[currentMove].squares;
-    // console.log('Current Move: ', history[currentMove]);
 
     function handlePlay(nextSquares, moveIndex){
         const nextHistory = [...history.slice(0, currentMove + 1), {squares: nextSquares, moveIndex}];
