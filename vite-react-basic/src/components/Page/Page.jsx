@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import Navi from '@components/Navi/Navi'
+import Navi from '@/components/Navi/Navi'
 
 const Page = ({children}) => {
     return (
@@ -9,3 +9,5 @@ const Page = ({children}) => {
         </>
     )
 }
+
+export default Page

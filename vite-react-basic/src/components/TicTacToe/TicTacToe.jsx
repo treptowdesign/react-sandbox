@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import React from 'react';
 import './TicTacToe.sass';
-import Navi from '@/components/Navi/Navi';
 
 // ToDo List... 
 // [x] change board to loop out squares 
@@ -137,7 +136,6 @@ const TicTacToe = () => {
 
     return (
         <>
-            <Navi />
             <h1>Tic Tac Toe</h1>
             <div className="status">Looking at move {currentMove + 1} of {history.length}</div>
             <div className="game">

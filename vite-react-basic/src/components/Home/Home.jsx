@@ -4,14 +4,12 @@ import { useState } from 'react'
 import reactLogo from '/react.svg'
 import viteLogo from '/vite.svg'
 import './Home.sass'
-import Navi from '@/components/Navi/Navi';
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <Navi />
       <div className="home-body">
         <div>
           <a href="https://vite.dev" target="_blank">

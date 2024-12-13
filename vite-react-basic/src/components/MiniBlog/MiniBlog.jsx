@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Navi from '@/components/Navi/Navi'
 import './MiniBlog.sass'
 import seedData from './seedData'
 import PostForm from './PostForm'
@@ -81,7 +80,6 @@ const MiniBlog = () => {
 
   return (
     <>
-      <Navi />
       <div className="mini-blog">
         <h1>MiniBlog</h1>
         <div className="blog-body">

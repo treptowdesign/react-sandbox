@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './Spellbook.sass'
 import spellData from './spellData'
-import Navi from '@/components/Navi/Navi'
 
 //////////////////////////////////////////////////////////
 // Notes
@@ -97,7 +96,6 @@ function Spellbook() {
 
   return (
     <>
-        <Navi />
         <header className="spellbook-header">
         <div>Spellbook: {spellList.length} records, Filtered: {filteredSpells.length} record(s)</div>
         </header>

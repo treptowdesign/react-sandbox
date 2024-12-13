@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './ConnectFour.sass';
-import Navi from '@/components/Navi/Navi';
 
 ///////////////////////////////////////////////////////////////// 
 // Utility Functions
@@ -163,7 +162,6 @@ const ConnectFour = () => {
 
     return (
         <>
-            <Navi />
             <div className="connect-four">
                 <h1>Connect Four</h1>
                 <StatusBar redIsNext={redIsNext} winner={winner} turnNum={currentMove}/>
