@@ -62,21 +62,11 @@ const Carousel = ({ panels }) => {
                 // }
         
                 return (
-                    <div
-                    key={index}
-                    className={`panel ${positionClass}`}
-                    style={{
-                        transform:
-                        positionClass === 'active'
-                            ? 'translateX(0)'
-                            : positionClass === 'previous'
-                            ? 'translateX(-100%)'
-                            : positionClass === 'next'
-                            ? 'translateX(100%)'
-                            : '',
-                    }}
+                    <div 
+                      key={index} 
+                      className={`panel ${positionClass}`}
                     >
-                    {panel}
+                      {panel}
                     </div>
                 );
                 })}
